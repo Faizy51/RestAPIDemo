@@ -11,10 +11,28 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var listOfRooms: [RoomData] = []
+    
+    func downloadInitialData() {
+        let service = Services()
+        service.downloadData(forType: .roomList, withRoom: nil) { (list) in
+            
+            guard let roomList = list as? [RoomData] else {
+                NotificationCenter.default.post(name: Notification.Name("reload"), object: nil, userInfo: ["hasData" : false])
+                return
+            }
+            
+            self.listOfRooms = roomList
+            // Post notification to reload UI
+            NotificationCenter.default.post(name: Notification.Name("reload"), object: nil, userInfo: ["hasData" : true])
+            
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        downloadInitialData()
+        
         return true
     }
 
