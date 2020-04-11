@@ -16,14 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func downloadInitialData() {
         let service = Services()
         service.downloadData(forType: .roomList, withRoom: nil) { (list) in
-            
             guard let roomList = list as? [RoomData] else {
+                sleep(2)
                 NotificationCenter.default.post(name: Notification.Name("reload"), object: nil, userInfo: ["hasData" : false])
                 return
             }
-            
             self.listOfRooms = roomList
-            // Post notification to reload UI
+            // Post notification
             NotificationCenter.default.post(name: Notification.Name("reload"), object: nil, userInfo: ["hasData" : true])
             
         }

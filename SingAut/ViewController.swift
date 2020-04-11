@@ -16,14 +16,16 @@ class ViewController: UIViewController {
     var loadingLabel = UILabel()
     let appdel = UIApplication.shared.delegate as! AppDelegate
     var selectedRow: Int?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(forName: Notification.Name("reload"), object: nil, queue: OperationQueue.main, using: didDownloadData(notif:))
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationItem.largeTitleDisplayMode = .always
-
-        NotificationCenter.default.addObserver(forName: Notification.Name("reload"), object: nil, queue: OperationQueue.main, using: didDownloadData(notif:))
-
+        
         setupIndicatorandLabel()
         configureInitialScreen()
         

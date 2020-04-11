@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 struct RoomList: Codable {
     var data: [RoomData]
     var success: Bool

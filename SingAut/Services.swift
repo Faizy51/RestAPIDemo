@@ -51,10 +51,11 @@ class Services {
         // Give me the request
         let request = formJsonRequest(ofType: service, forRoom: id)
         
-        
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
-                print(String(describing: error))
+                if let errorMessage = error?.localizedDescription {
+                    print(errorMessage)
+                }
                 handler(nil)
                 return
             }
@@ -68,9 +69,7 @@ class Services {
                     handler(roomList?.data)
                 }
                 else {
-                    print("Data recieved")
                     lockDetails = try JSONDecoder().decode(LockDetails.self, from: data)
-                    print("lock details recieved : \(lockDetails)")
                     handler(lockDetails)
                 }
             }
